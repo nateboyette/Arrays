@@ -138,8 +138,8 @@ void arr_append(Array *arr, char *element)
 }
 
 /*****
- * Remove the first occurence of the given element from the array,
- * then shift every element after that occurence to the left one slot.
+ * Remove the first occurrence of the given element from the array,
+ * then shift every element after that occurrence to the left one slot.
  *
  * Throw an error if the value is not found.
  *****/
@@ -155,19 +155,19 @@ void arr_remove(Array *arr, char *element)
     current++;
   }
 
-  char *temp = arr->elements[current];
+  // char *temp = arr->elements[current];
 
   // Shift over every element after the removed element to the left one position
-  while (current < arr->count)
+  while (current < arr->count - 1)
   {
-    arr->elements[current] = arr->elements[current] + 1;
+    arr->elements[current] = arr->elements[current + 1];
     current++;
   }
 
-  arr->elements[current] = NULL;
+  arr->elements[current] = '\0';
 
   // Don't forget to free its memory!
-  free(temp);
+  // free(temp);
 
   // Decrement count by 1
   arr->count--;
