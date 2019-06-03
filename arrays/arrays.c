@@ -103,18 +103,29 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count)
+  if (arr->count < index)
   {
-    return NULL;
+    printf("Out of space!");
   }
 
   // Resize the array if the number of elements is over capacity
-
+  if (arr->count == arr->capacity)
+  {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
 
+  for (int i = arr->count - 1; i > index; i--)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+  }
+
   // Copy the element (hint: use `strdup()`) and add it to the array
+  char *copy = strdup(element);
+  arr->elements[index] = copy;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -132,7 +143,9 @@ void arr_append(Array *arr, char *element)
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+
+  char *copy = strdup(element);
+  arr->elements[arr->count] = copy;
   // Increment count by 1
   arr->count++;
 }
@@ -155,19 +168,17 @@ void arr_remove(Array *arr, char *element)
     current++;
   }
 
-  // char *temp = arr->elements[current];
-
   // Shift over every element after the removed element to the left one position
   while (current < arr->count - 1)
   {
-    arr->elements[current] = arr->elements[current + 1];
+    arr->elements[current + 1] = arr->elements[current];
     current++;
   }
 
   arr->elements[current] = '\0';
 
   // Don't forget to free its memory!
-  // free(temp);
+  free(element);
 
   // Decrement count by 1
   arr->count--;
@@ -196,15 +207,15 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_insert(arr, "STRING1", 0);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
-  // destroy_array(arr);
+  destroy_array(arr);
 
   return 0;
 }
